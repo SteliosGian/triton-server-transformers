@@ -1,0 +1,17 @@
+name: "ner-model"
+backend: "python"
+
+input [
+ {
+   name: "prompt"
+   data_type: TYPE_STRING
+   dims: [-1]
+  }
+]
+output [
+ {
+   name: "generated_text"
+   data_type: TYPE_STRING
+   dims: [-1]
+ }
+]
