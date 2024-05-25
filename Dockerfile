@@ -1,4 +1,5 @@
-FROM nvcr.io/nvidia/tritonserver:24.04-pyt-python-py3
+# FROM nvcr.io/nvidia/tritonserver:24.04-pyt-python-py3
+FROM nvcr.io/nvidia/tritonserver:24.04-py3
 
 ARG APPDIR=/ner-model
 
