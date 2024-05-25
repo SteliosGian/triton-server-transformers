@@ -1,0 +1,84 @@
+name: "transformers"
+platform: "ensemble"
+max_batch_size: 0
+
+input [
+ {
+   name: "text"
+   data_type: TYPE_STRING
+   dims: [-1]
+  }
+]
+output {
+   name: "output_text"
+   data_type: TYPE_STRING
+   dims: [-1]
+ }
+
+ ensemble_scheduling {
+    step [
+        {
+            model_name: "tokenize"
+            model_version: -1
+            input_map {
+                key: "text"
+                value: "text"
+            }
+            output_map [
+                {
+                    key: "input_ids"
+                    value: "input_ids"
+                },
+                {
+                    key: "attention"
+                    value: "attention"
+                },
+                {
+                    key: "token_type_ids"
+                    value: "token_type_ids"
+                }
+            ]
+        },
+        {
+            model_name: "ner-model-onnx"
+            model_version: -1
+            input_map [
+                {
+                    key: "input_ids"
+                    value: "input_ids"
+                },
+                {
+                    key: "attention_mask"
+                    value: "attention"
+                },
+                {
+                    key: "token_type_ids"
+                    value: "token_type_ids"
+                }
+            ]
+            output_map {
+                key: "logits"
+                value: "logits"
+            }
+        },
+        {
+            model_name: "decode"
+            model_version: -1
+            input_map [
+                {
+                    key: "logits"
+                    value: "logits"
+                },
+                {
+                    key: "input_ids"
+                    value: "input_ids"
+                }
+            ]
+            output_map {
+                key: "output_text"
+                value: "output_text"
+            }
+        }
+    ]
+ }
+
